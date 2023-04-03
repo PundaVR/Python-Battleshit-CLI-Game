@@ -1,5 +1,6 @@
 import os
 import time
+import random
 
 board = []
 x = 10
@@ -89,12 +90,15 @@ def PlaceBoats():
 def CPUBoats():
     print("CPUBoats")
 
-def CheckHit(x,y):
+def CheckHit(x,y, cpuMove):
     if (board[y][x] == '[=]'):
         board[y][x] = '[X]'
         return True
     elif (board[y][x] == '[ ]'):
-        board[y][x] = '[~]'
+        if(cpuMove):
+            board[y][x] = '[-]'
+        else:
+            board[y][x] = '[~]'
 
 def GameUI():
     PrintBoard()
@@ -105,9 +109,11 @@ def GameUI():
 
 def Attack(x,y, cpuMove):
     if(cpuMove):
-        print("")
+        if(CheckHit(x,y, cpuMove)):
+            CPU()
+            return True
     else:
-        if(CheckHit(x,y)):
+        if(CheckHit(x,y, cpuMove)):
             Move()
             return True
         else:
@@ -115,7 +121,17 @@ def Attack(x,y, cpuMove):
 
     
 def CPU():
-    lol = input("cpu mimic?")
+    # lol = input("cpu mimic?")
+    #print("cpu mimic prunt?")
+    cpuX = random.randint(0,9)
+    cpuY = random.randint(0,9)
+    global lastCpuMove
+    lastCpuMove = f'{cpuX}{cpuY}'
+    while(Attack(cpuX, cpuY, True)):
+        cpuX = cpuX+1
+        cpuY = cpuY
+        
+    
 
 def CreateCpuBoats():
     print("createcpuboats")    
